@@ -33,7 +33,6 @@ class LikeOrNotState extends State<LikeOrNotPage> {
                 MaterialPageRoute(builder: (context) => pages[_selectedIndex]));
     });
   }
-  
  
   @override
   Widget build(BuildContext context) {
@@ -85,29 +84,33 @@ class LikeOrNotState extends State<LikeOrNotPage> {
     bottomNavigationBar: BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
-      selectedItemColor: Colors.amber[800],
+      selectedItemColor: Colors.black,
       showUnselectedLabels: true,
-      unselectedItemColor: Colors.black,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           title: Text('Catégories'),
+          backgroundColor: Colors.blue,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite),
           title: Text('J\'aime'),
+          backgroundColor: Colors.blue,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.help),
           title: Text('Besoin aide'),
+          backgroundColor: Colors.blue,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.sentiment_satisfied),
+          backgroundColor: Colors.blue,
           title: Text('Satisfait'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.done_all),
           title: Text('Synthèse'),
+          backgroundColor: Colors.blue,
         )
       ],
     ),
