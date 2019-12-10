@@ -43,13 +43,14 @@ class CategoryItem extends StatelessWidget {
       )
   );
 
-    return InkWell(
+    return Material(
+      child:InkWell(
       child: item,
       onTap: () {
             Navigator.push(context, 
               MaterialPageRoute(builder: (context) => SelectHabitsPage(category : category)));
           }
-    ); 
+    )); 
     
     
     /* Card(

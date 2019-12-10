@@ -1,50 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:jeu/data/CategoryRepository.dart';
+import 'package:jeu/page/GameHomePage.dart';
 import 'package:jeu/page/LikeOrNotPage.dart';
 import 'package:jeu/page/NeedHelpOrNot.dart';
 import 'package:jeu/page/SatisfiedOrNot.dart';
-import 'package:jeu/page/SummaryPage.dart';
-import 'package:jeu/widget/CategoryItem.dart';
 import 'package:jeu/model/global.dart' as global;
 
-class GameHomePage extends StatefulWidget {
-  
-  final categories = new CategoryRepository().getCategories();
+class SummaryPage extends StatefulWidget {
 
-  _GameHomeState createState() => _GameHomeState();  
+  SummaryState createState() => SummaryState();
 }
 
-class _GameHomeState extends State<GameHomePage> {
+class SummaryState extends State<SummaryPage> {
   int _selectedIndex = global.appBarIndexSelected;
 
-   void _onItemTapped(int index) {
-    var pages = [GameHomePage(), LikeOrNotPage(), NeedHelpOrNotPage(), SatisfiedOrNotPage(), SummaryPage()];
+  void _onItemTapped(int index) {
+  var pages = [GameHomePage(), LikeOrNotPage(), NeedHelpOrNotPage(), SatisfiedOrNotPage(), SummaryPage()];
 
-    setState(() {
-      _selectedIndex = index;
-      global.appBarIndexSelected = index;
-      Navigator.push(context, 
-                MaterialPageRoute(builder: (context) => pages[_selectedIndex]));
-    });
-  }
-  
+  setState(() {
+    _selectedIndex = index;
+    global.appBarIndexSelected = index;
+    Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => pages[_selectedIndex]));
+  });
+}
+
   @override
   Widget build(BuildContext context) {
-    var listview = ListView.builder(
-      itemCount: widget.categories.length,
-      itemBuilder: (context, index) {
-        return CategoryItem(widget.categories[index]);
-      },
-    );
-
-    return Scaffold( 
-    appBar: AppBar(
-      title: Text("Sélection des catégories"),
-    ),
-    body: Center(
-      child: listview
-    ),
-    bottomNavigationBar: BottomNavigationBar(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Synthèse"),
+      ),
+      body: Text("hello"),        
+      bottomNavigationBar: BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
       selectedItemColor: Colors.amber[800],
@@ -72,9 +59,8 @@ class _GameHomeState extends State<GameHomePage> {
           title: Text('Synthèse'),
         )
       ],
-    ),
-  );
+    )
+    );
   }
+
 }
-
-

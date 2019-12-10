@@ -1,34 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:jeu/model/Habit.dart';
 
-class HabitItem extends StatefulWidget {
-  const HabitItem({
+class HabitItemSatisfied extends StatefulWidget {
+  HabitItemSatisfied({
     Key key,
     this.habit,
-    this.child
+    this.child,
+    this.parent
   }) : super(key : key);
 
   final Habit habit;
   final Widget child;
+  final State parent;
   
-  _HabitItemState createState() => _HabitItemState();
+  _HabitItemSatisfiedState createState() => _HabitItemSatisfiedState();
 }
 
-class _HabitItemState extends State<HabitItem> {
-  int _state = 0;
+class _HabitItemSatisfiedState extends State<HabitItemSatisfied> {
   var highlights = [Colors.grey, Colors.green, Colors.red, Colors.lime];
 
-  void updateState(int newState){
-    _state = newState;
-    this.widget.habit.state = _state;
+  void updateState(bool newState){
+    this.widget.habit.satisfiedOrNot = newState;
+    this.widget.parent.setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final image = new Image(
       image: new AssetImage(widget.habit.image),
-      height: 300.0,
-      width: 300.0,
+      height: 150.0,
+      width: 150.0,
     );
 
     final name = Text(widget.habit.name);
@@ -36,12 +37,13 @@ class _HabitItemState extends State<HabitItem> {
     final description = Text(widget.habit.description);
 
     final item = Container(
+      height: 200,
         child: Column(children: <Widget>[
           name, description, Expanded(child:image)],
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: highlights[this.widget.habit.state],
+            color: Colors.grey,
             width: 8
           )
         ),
@@ -62,16 +64,13 @@ class _HabitItemState extends State<HabitItem> {
             Container(
               child: new Image(image: new AssetImage(habit.image),height: 300.0,width: 300.0,),
             ),
-            Text("Cette habitude est ... ", textAlign: TextAlign.center),
+            Text("Je suis satisfait de cette habitude", textAlign: TextAlign.center),
             FlatButton(
-                onPressed: () => Navigator.of(context).pop(1),
-                child: Text('Présente')),
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text('Oui')),
             FlatButton(
-                onPressed: () => Navigator.of(context).pop(2),
-                child: Text('Absente')),
-            FlatButton(
-                onPressed: () => Navigator.of(context).pop(3),
-                child: Text('J\'aimerai')),
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('Non')),
           ],
         );
       }).then((val){

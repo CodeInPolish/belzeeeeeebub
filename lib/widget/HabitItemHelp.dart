@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jeu/model/Habit.dart';
-import 'package:jeu/page/LikeOrNotPage.dart';
 
-class HabitItem2 extends StatefulWidget {
-  HabitItem2({
+class HabitItemHelp extends StatefulWidget {
+  HabitItemHelp({
     Key key,
     this.habit,
     this.child,
@@ -12,16 +11,16 @@ class HabitItem2 extends StatefulWidget {
 
   final Habit habit;
   final Widget child;
-  State parent;
+  final State parent;
   
-  _HabitItemState2 createState() => _HabitItemState2();
+  _HabitItemHelpState createState() => _HabitItemHelpState();
 }
 
-class _HabitItemState2 extends State<HabitItem2> {
+class _HabitItemHelpState extends State<HabitItemHelp> {
   var highlights = [Colors.grey, Colors.green, Colors.red, Colors.lime];
 
   void updateState(bool newState){
-    this.widget.habit.likedOrNot = newState;
+    this.widget.habit.needHelpOrNot = newState;
     this.widget.parent.setState(() {});
   }
 
@@ -65,6 +64,7 @@ class _HabitItemState2 extends State<HabitItem2> {
             Container(
               child: new Image(image: new AssetImage(habit.image),height: 300.0,width: 300.0,),
             ),
+            Text("J'ai besoin d'aide pour accomplir cette habitude", textAlign: TextAlign.center),
             FlatButton(
                 onPressed: () => Navigator.of(context).pop(true),
                 child: Text('Oui')),
