@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:jeu/model/Habit.dart';
+import 'package:jeu/page/LikeOrNotPage.dart';
 
 class HabitItem2 extends StatefulWidget {
-  const HabitItem2({
+  HabitItem2({
     Key key,
     this.habit,
-    this.child
+    this.child,
+    this.parent
   }) : super(key : key);
 
   final Habit habit;
   final Widget child;
+  State parent;
   
   _HabitItemState2 createState() => _HabitItemState2();
 }
 
 class _HabitItemState2 extends State<HabitItem2> {
-  bool _state;
   var highlights = [Colors.grey, Colors.green, Colors.red, Colors.lime];
 
   void updateState(bool newState){
-    _state = newState;
-    this.widget.habit.likedOrNot = _state;
+    this.widget.habit.likedOrNot = newState;
+    this.widget.parent.setState(() {});
   }
 
   @override
@@ -36,12 +38,13 @@ class _HabitItemState2 extends State<HabitItem2> {
     final description = Text(widget.habit.description);
 
     final item = Container(
+      height: 200,
         child: Column(children: <Widget>[
           name, description, Expanded(child:image)],
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: highlights[this.widget.habit.state],
+            color: Colors.grey,
             width: 8
           )
         ),
