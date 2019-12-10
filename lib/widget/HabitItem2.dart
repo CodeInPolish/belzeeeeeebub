@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jeu/model/Habit.dart';
 
-class HabitItem extends StatefulWidget {
-  const HabitItem({
+class HabitItem2 extends StatefulWidget {
+  const HabitItem2({
     Key key,
     this.habit,
     this.child
@@ -11,24 +11,24 @@ class HabitItem extends StatefulWidget {
   final Habit habit;
   final Widget child;
   
-  _HabitItemState createState() => _HabitItemState();
+  _HabitItemState2 createState() => _HabitItemState2();
 }
 
-class _HabitItemState extends State<HabitItem> {
-  int _state = 0;
+class _HabitItemState2 extends State<HabitItem2> {
+  bool _state;
   var highlights = [Colors.grey, Colors.green, Colors.red, Colors.lime];
 
-  void updateState(int newState){
+  void updateState(bool newState){
     _state = newState;
-    this.widget.habit.state = _state;
+    this.widget.habit.likedOrNot = _state;
   }
 
   @override
   Widget build(BuildContext context) {
     final image = new Image(
       image: new AssetImage(widget.habit.image),
-      height: 300.0,
-      width: 300.0,
+      height: 150.0,
+      width: 150.0,
     );
 
     final name = Text(widget.habit.name);
@@ -63,14 +63,11 @@ class _HabitItemState extends State<HabitItem> {
               child: new Image(image: new AssetImage(habit.image),height: 300.0,width: 300.0,),
             ),
             FlatButton(
-                onPressed: () => Navigator.of(context).pop(1),
-                child: Text('Présent')),
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text('Oui')),
             FlatButton(
-                onPressed: () => Navigator.of(context).pop(2),
-                child: Text('Absent')),
-            FlatButton(
-                onPressed: () => Navigator.of(context).pop(3),
-                child: Text('J\'aimerai')),
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('Non')),
           ],
         );
       }).then((val){

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jeu/GameHomePage.dart';
+import 'package:jeu/page/GameHomePage.dart';
 
 void main() => runApp(MyApp());
 

@@ -4,6 +4,10 @@ class Habit {
   final String name;
   final String description;
   final String image;
+  int state;
+  bool likedOrNot;
+  bool needHelpOrNot;
+  bool satisfiedOrNot;
 
-  const Habit({this.id, this.categoryId, this.name, this.description, this.image});
+  Habit({this.id, this.categoryId, this.name, this.description, this.image, this.likedOrNot, this.needHelpOrNot, this.satisfiedOrNot, this.state});
 }
