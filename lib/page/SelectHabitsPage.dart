@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jeu/page/GameHomePage.dart';
 import 'package:jeu/page/LikeOrNotPage.dart';
 import 'package:jeu/model/Category.dart';
-import 'package:jeu/data/HabitRepository.dart';
+import 'package:jeu/data/GameRepository.dart';
 import 'package:jeu/page/NeedHelpOrNot.dart';
 import 'package:jeu/page/SatisfiedOrNot.dart';
 import 'package:jeu/page/SummaryPage.dart';
@@ -32,7 +32,7 @@ class _SelectHabitsState extends State<SelectHabitsPage> {
   
   Widget build(BuildContext context){
 
-  final habits = new HabitRepository().getHabits().where((i) => i.categoryId == widget.category.id).toList();
+  final habits = new GameRepository().getCurrentOpenGame("1").getHabits().where((i) => i.categoryId == widget.category.id).toList();
   
   return Scaffold( 
     appBar: AppBar(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jeu/data/HabitRepository.dart';
+import 'package:jeu/data/GameRepository.dart';
 import 'package:jeu/page/GameHomePage.dart';
 import 'package:jeu/page/LikeOrNotPage.dart';
 import 'package:jeu/page/SatisfiedOrNot.dart';
 import 'package:jeu/page/SummaryPage.dart';
-import 'package:jeu/widget/HabitItemHelp.dart'; //remettre l'import pour tester les listview
+import 'package:jeu/widget/HabitItemHelp.dart';
 import 'package:jeu/model/global.dart' as global;
 
 class NeedHelpOrNotPage extends StatefulWidget {
@@ -16,7 +16,7 @@ class NeedHelpOrNotState extends State<NeedHelpOrNotPage> {
   var _selectedHabits;
   @override
   void initState() {
-    _selectedHabits = HabitRepository().getHabits().where((i) => i.state == 1 || i.state == 3).toList();
+    _selectedHabits = GameRepository().getCurrentOpenGame("1").getHabits().where((i) => i.state == 1 || i.state == 3).toList();
     super.initState();
   }
 
@@ -36,8 +36,101 @@ class NeedHelpOrNotState extends State<NeedHelpOrNotPage> {
   @override
   Widget build(BuildContext context) {
     var _noActionTaken = _selectedHabits.where((i) => i.needHelpOrNot == null).toList();
-    var _liked = _selectedHabits.where((i) => i.needHelpOrNot == true).toList();
-    var _notLiked = _selectedHabits.where((i) => i.needHelpOrNot == false).toList();
+    var _needHelp = _selectedHabits.where((i) => i.needHelpOrNot == true).toList();
+    var _noNeedHelp = _selectedHabits.where((i) => i.needHelpOrNot == false).toList();
+
+    BoxDecoration columnDecoration = 
+      BoxDecoration(
+        border: Border.all(
+          width: 2,
+          color: Colors.black
+        )
+    );
+
+
+    Widget _noActionTakenLabel = Container(
+      height: 150,
+      decoration: BoxDecoration(
+        border: Border.all(
+        width: 2,
+        color: Colors.black
+        )
+      ),
+      width: double.infinity,
+      child: Center(
+        child: Text("En attente d'action", textAlign: TextAlign.center,),
+      )
+    );
+
+    Widget _needHelpLabel = Container( 
+      height: 150,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border.all(
+        width: 2,
+        color: Colors.black
+        )
+      ),
+      child:SizedBox(
+        child: new Image(
+          image: new AssetImage('assets/img/labels/needhelp.png'),
+      ),
+      height: 150
+      )
+    );
+
+    Widget _noHelpNeededLabel = Container( 
+      height: 150,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border.all(
+        width: 2,
+        color: Colors.black
+        )
+      ),
+      child:SizedBox(
+        child: new Image(
+          image: new AssetImage('assets/img/labels/noneedhelp.png'),
+        ),
+      height: 150
+      )
+    );
+
+    Widget _noActionTakenWidget =  Expanded(
+      child: Container(
+        decoration: columnDecoration,
+        child:ListView.builder(
+          itemCount: _noActionTaken.length,
+          itemBuilder: (context, index) {
+            return new HabitItemHelp(habit:_noActionTaken[index], parent: this);
+          }
+        )
+      )
+    );
+    
+    Widget _needHelpWidget =  Expanded(
+      child: Container(
+        decoration: columnDecoration,
+        child:ListView.builder(
+          itemCount: _needHelp.length,
+          itemBuilder: (context, index) {
+            return new HabitItemHelp(habit:_needHelp[index], parent: this);
+          },
+        )
+      )
+    );
+
+    Widget _noHelpNeededWidget =  Expanded(
+      child: Container(
+        decoration: columnDecoration,
+        child:ListView.builder(
+          itemCount: _noNeedHelp.length,
+          itemBuilder: (context, index) {
+            return new HabitItemHelp(habit:_noNeedHelp[index], parent: this);
+          },
+        )
+      )
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -51,38 +144,43 @@ class NeedHelpOrNotState extends State<NeedHelpOrNotPage> {
         )
       ],
       ),
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: Container(
+        child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
             Expanded(
-              child:ListView.builder(
-                physics: ClampingScrollPhysics(),
-                itemCount: _noActionTaken.length,
-                itemBuilder: (context, index) {
-                  return new HabitItemHelp(habit:_noActionTaken[index], parent: this); //crash je sais pas pk
-                },
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    _noActionTakenLabel,
+                    _noActionTakenWidget
+                  ],
+                )  
               )
             ),
             Expanded(
-              child:ListView.builder(
-                physics: ClampingScrollPhysics(),
-                itemCount: _liked.length,
-                itemBuilder: (context, index) {
-                  return new HabitItemHelp(habit:_liked[index], parent: this);
-                },
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    _needHelpLabel,
+                    _needHelpWidget
+                  ],
+                )  
               )
             ),
             Expanded(
-              child:ListView.builder(
-                physics: ClampingScrollPhysics(),
-                itemCount: _notLiked.length,
-                itemBuilder: (context, index) {
-                  return new HabitItemHelp(habit:_notLiked[index], parent: this);
-                },
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    _noHelpNeededLabel,
+                    _noHelpNeededWidget
+                  ],
+                )  
               )
-            )
+            ),
           ]
         ),
+    ),
       bottomNavigationBar: BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
@@ -101,7 +199,7 @@ class NeedHelpOrNotState extends State<NeedHelpOrNotPage> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.help),
-          title: Text('Besoin aide'),
+          title: Text('Besoin d\'aide'),
           backgroundColor: Colors.blue,
         ),
         BottomNavigationBarItem(

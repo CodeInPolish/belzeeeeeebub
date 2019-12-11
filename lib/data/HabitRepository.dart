@@ -64,6 +64,5 @@ class HabitRepository {
   List<Habit> getHabits(){
     return habits;
   }
-
-
+  
 }

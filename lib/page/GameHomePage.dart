@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jeu/data/CategoryRepository.dart';
+import 'package:jeu/data/GameRepository.dart';
 import 'package:jeu/page/LikeOrNotPage.dart';
 import 'package:jeu/page/NeedHelpOrNot.dart';
 import 'package:jeu/page/SatisfiedOrNot.dart';
@@ -9,7 +9,7 @@ import 'package:jeu/model/global.dart' as global;
 
 class GameHomePage extends StatefulWidget {
   
-  final categories = new CategoryRepository().getCategories();
+  final categories = new GameRepository().getCurrentOpenGame("1").getCategories();
 
   _GameHomeState createState() => _GameHomeState();  
 }

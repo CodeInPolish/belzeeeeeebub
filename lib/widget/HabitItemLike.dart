@@ -43,8 +43,8 @@ class _HabitItemLikeState extends State<HabitItemLike> {
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.grey,
-            width: 8
+            color: Colors.black,
+            width: 2
           )
         ),
       );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jeu/data/HabitRepository.dart';
+import 'package:jeu/data/GameRepository.dart';
 import 'package:jeu/page/GameHomePage.dart';
 import 'package:jeu/page/NeedHelpOrNot.dart';
 import 'package:jeu/page/SatisfiedOrNot.dart';
 import 'package:jeu/page/SummaryPage.dart';
-import 'package:jeu/widget/HabitItemLike.dart'; //remettre l'import pour tester les listview
+import 'package:jeu/widget/HabitItemLike.dart';
 import 'package:jeu/model/global.dart' as global;
 
 class LikeOrNotPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class LikeOrNotState extends State<LikeOrNotPage> {
   var _selectedHabits;
   @override
   void initState() {
-    _selectedHabits = HabitRepository().getHabits().where((i) => i.state == 1 || i.state == 3).toList();
+    _selectedHabits = GameRepository().getCurrentOpenGame("1").getHabits().where((i) => i.state == 1 || i.state == 3).toList();
     super.initState();
   }
 
@@ -40,6 +40,101 @@ class LikeOrNotState extends State<LikeOrNotPage> {
     var _liked = _selectedHabits.where((i) => i.likedOrNot == true).toList();
     var _notLiked = _selectedHabits.where((i) => i.likedOrNot == false).toList();
 
+    BoxDecoration columnDecoration = 
+      BoxDecoration(
+        border: Border.all(
+          width: 2,
+          color: Colors.black
+        )
+    );
+
+    Widget _noActionTakenLabel = 
+      Container(
+        height: 150,
+        decoration: BoxDecoration(
+          border: Border.all(
+          width: 2,
+          color: Colors.black
+          )
+        ),
+        width: double.infinity,
+        child: Center(
+          child: Text("En attente d'action", textAlign: TextAlign.center,),
+        )
+      );
+
+    Widget _likedLabel = 
+      Container( 
+        height: 150,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          border: Border.all(
+          width: 2,
+          color: Colors.black
+          )
+        ),
+      child:SizedBox(
+        child: new Image(
+          image: new AssetImage('assets/img/labels/smilingheart.jpg'),
+      ),
+      height: 150
+      )
+    );
+
+    Widget _notLikedLabel = Container( 
+      height: 150,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border.all(
+        width: 2,
+        color: Colors.black
+      )
+    ),
+    child:SizedBox(
+      child: new Image(
+        image: new AssetImage('assets/img/labels/sadheart.jpg'),
+      ),
+    height: 150
+    )
+  );
+
+    Widget _noActionTakenWidget = Expanded(
+      child: Container(
+        decoration: columnDecoration,
+        child:ListView.builder(
+          itemCount: _noActionTaken.length,
+          itemBuilder: (context, index) {
+            return new HabitItemLike(habit:_noActionTaken[index], parent: this); //crash je sais pas pk
+          },
+        )
+      )
+    );
+
+    Widget _likedWidget = Expanded(
+      child: Container(
+        decoration: columnDecoration,
+        child: ListView.builder(
+          itemCount: _liked.length,
+          itemBuilder: (context, index) {
+            return new HabitItemLike(habit:_liked[index], parent: this);
+          },
+        )  
+      )
+    );
+
+    Widget _notLikedWidget = Expanded(
+      child: Container(
+        decoration: columnDecoration,
+        height: double.infinity,
+        child:ListView.builder(
+          itemCount: _notLiked.length,
+          itemBuilder: (context, index) {
+            return new HabitItemLike(habit:_notLiked[index], parent: this);
+          },
+        )
+      )
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text("J'aime ou pas"),
@@ -50,37 +145,47 @@ class LikeOrNotState extends State<LikeOrNotPage> {
             _onItemTapped(2);
           },
         )
-      ],
+        ],
       ),
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: Container(
+        child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
             Expanded(
-              child:ListView.builder(
-                itemCount: _noActionTaken.length,
-                itemBuilder: (context, index) {
-                  return new HabitItemLike(habit:_noActionTaken[index], parent: this); //crash je sais pas pk
-                },
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    _noActionTakenLabel,
+                    _noActionTakenWidget
+                  ],
+                )  
               )
             ),
             Expanded(
-              child:ListView.builder(
-                itemCount: _liked.length,
-                itemBuilder: (context, index) {
-                  return new HabitItemLike(habit:_liked[index], parent: this);
-                },
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    _likedLabel,
+                    _likedWidget
+                  ],
+                )  
               )
             ),
             Expanded(
-              child:ListView.builder(
-                itemCount: _notLiked.length,
-                itemBuilder: (context, index) {
-                  return new HabitItemLike(habit:_notLiked[index], parent: this);
-                },
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    _notLikedLabel,
+                    _notLikedWidget
+                  ],
+                )  
               )
-            )
+            ),
           ]
         ),
+    ),
     bottomNavigationBar: BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,

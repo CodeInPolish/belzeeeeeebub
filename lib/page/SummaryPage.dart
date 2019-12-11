@@ -16,13 +16,48 @@ class SummaryState extends State<SummaryPage> {
   void _onItemTapped(int index) {
   var pages = [GameHomePage(), LikeOrNotPage(), NeedHelpOrNotPage(), SatisfiedOrNotPage(), SummaryPage()];
 
-  setState(() {
-    _selectedIndex = index;
-    global.appBarIndexSelected = index;
-    Navigator.push(context, 
-              MaterialPageRoute(builder: (context) => pages[_selectedIndex]));
-  });
-}
+    setState(() {
+      _selectedIndex = index;
+      global.appBarIndexSelected = index;
+      Navigator.push(context, 
+                MaterialPageRoute(builder: (context) => pages[_selectedIndex]));
+    });
+  }
+
+  Widget body = Container(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Expanded(
+          child:Container(
+          child: Column(
+            children: <Widget>[
+              Placeholder(),
+              Placeholder()
+            ],),
+          )
+        ),
+        Expanded(
+          child:Container(
+          child: Column(
+            children: <Widget>[
+              Placeholder(),
+              Placeholder()
+            ],),
+          )
+        ),
+        Expanded(
+          child:Container(
+          child: Column(
+            children: <Widget>[
+              Placeholder(),
+              Placeholder()
+            ],),
+          )
+        )
+      ],
+      ),
+    );
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +65,7 @@ class SummaryState extends State<SummaryPage> {
       appBar: AppBar(
         title: Text("Synthèse"),
       ),
-      body: Text("hello"),        
+      body: body,        
       bottomNavigationBar: BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
